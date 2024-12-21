@@ -1,0 +1,10 @@
+# Ignore large dataset files
+
+dataset/train.csv
+dataset/test.csv
+dataset/series_train.parquet/
+dataset/series_test.parquet/
+dataset/sample_submission.csv
+
+# Ignore catboost info
+catboost_info/*

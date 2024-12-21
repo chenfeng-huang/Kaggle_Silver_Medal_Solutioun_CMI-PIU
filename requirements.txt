@@ -1,0 +1,15 @@
+numpy
+pandas
+polars
+scikit-learn
+lightgbm
+xgboost
+catboost
+scipy
+matplotlib
+seaborn
+tqdm
+colorama
+ipython
+ipykernel
+pyarrow
