@@ -1,4 +1,7 @@
 ## Child Mind Institute — Problematic Internet Use (CMI‑PIU) Solution
+![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
+
+
 
 This solution was developed for the Kaggle competition [Child Mind Institute — Problematic Internet Use](https://www.kaggle.com/competitions/child-mind-institute-problematic-internet-use), where participants predict the severity category `sii ∈ {0,1,2,3}` using demographics, clinical/questionnaire data, and wearable time‑series signals. The approach combines tabular features with per‑participant time‑series summary statistics and trains tree‑based regressors with out‑of‑fold validation and threshold optimization for the Quadratic Weighted Kappa (QWK) metric.
 
