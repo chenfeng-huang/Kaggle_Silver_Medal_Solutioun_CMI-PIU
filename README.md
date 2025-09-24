@@ -30,50 +30,6 @@ This solution comprises three components:
 
 The final output is a two‑column `submission.csv` with `id,sii`.
 
-## Detailed Solution
-
-### 1. Data Preprocessing
-
-#### Data Reading and Transformation
-
-- Read tabular files: `dataset/train.csv`, `dataset/test.csv`, and `dataset/sample_submission.csv`.
-- Load per‑participant time‑series from `dataset/series_train.parquet/` and `dataset/series_test.parquet/`, where each participant has `id=<participant_id>/part-0.parquet`.
-- Drop the `step` column from time‑series and compute `describe()` for each channel; flatten into features `stat_0 .. stat_N`.
-- Merge the resulting stats DataFrame to the tabular frames on `id`, then drop `id` after merging.
-
-#### Categorical Handling and Missing Values
-
-- Identify season‑type categorical columns (e.g., `Basic_Demos-Enroll_Season`, `CGAS-Season`, `Physical-Season`, `PAQ_*`, `SDS-Season`, `PreInt_EduHx-Season`).
-- Fill missing categorical values with `"Missing"` and encode them into integers consistently across train/test.
-- Keep numeric columns as is; imputation strategies can be applied if needed (the notebook includes utilities/libs for imputation and pipelines).
-
-### 2. Modeling
-
-#### Model Selection
-
-- Use strong tree‑based regressors in regression mode:
-  - `LightGBM` (`LGBMRegressor`)
-  - `XGBoost` (`XGBRegressor`)
-  - `CatBoost` (`CatBoostRegressor`)
-- Optionally combine them via a simple ensemble such as `VotingRegressor`.
-
-#### Cross‑Validation and OOF Predictions
-
-- `StratifiedKFold(n_splits=5, shuffle=True, random_state=42)` on target `sii` to maintain class balance.
-- Train on folds and collect out‑of‑fold (OOF) predictions for validation analysis.
-
-#### Threshold Optimization and Metric
-
-- Optimize three thresholds on OOF predictions to map continuous outputs to {0,1,2,3} maximizing **QWK**:
-  - Define a `threshold_Rounder` that applies thresholding.
-  - Use `scipy.optimize.minimize` to search thresholds that maximize QWK (equivalently minimize negative QWK).
-- Apply the optimized thresholds to test predictions to produce discrete `sii`.
-
-### 3. Inference and Submission
-
-- Fit models on each fold, average test predictions across folds.
-- Apply optimized thresholds to the averaged predictions.
-- Save the final `submission.csv` with columns `id,sii` in the repo root.
 
 ## How to Reproduce
 
